@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Monster</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f8ff;
+        }
+        #game-container {
+            width: 400px;
+            background-color: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        #monster {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        #problem {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #answer {
+            font-size: 18px;
+            padding: 5px;
+            width: 50px;
+        }
+        #submit {
+            font-size: 18px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #result {
+            font-size: 20px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #score {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Math Monster</h1>
+    <div id="game-container">
+        <div id="monster">👾</div>
+        <div id="problem"></div>
+        <input type="number" id="answer" min="0" max="20">
+        <button id="submit">Feed Monster</button>
+        <div id="result"></div>
+        <div id="score">Score: <span id="score-value">0</span></div>
+    </div>
+
+    <script>
+        const monster = document.getElementById('monster');
+        const problem = document.getElementById('problem');
+        const answer = document.getElementById('answer');
+        const submit = document.getElementById('submit');
+        const result = document.getElementById('result');
+        const scoreValue = document.getElementById('score-value');
+
+        let currentSum = 0;
+        let score = 0;
+
+        function generateProblem() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            currentSum = num1 + num2;
+            problem.textContent = `${num1} + ${num2} = ?`;
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseInt(answer.value);
+            if (userAnswer === currentSum) {
+                result.textContent = "Correct! Monster is happy! 😊";
+                result.style.color = "green";
+                score++;
+                scoreValue.textContent = score;
+                monster.textContent = "😋";
+            } else {
+                result.textContent = "Oops! Try again. Monster is still hungry! 😕";
+                result.style.color = "red";
+                monster.textContent = "😢";
+            }
+            setTimeout(() => {
+                monster.textContent = "👾";
+                result.textContent = "";
+                answer.value = "";
+                generateProblem();
+            }, 2000);
+        }
+
+        submit.addEventListener('click', checkAnswer);
+        answer.addEventListener('keyup', (event) => {
+            if (event.key === "Enter") {
+                checkAnswer();
+            }
+        });
+
+        generateProblem();
+    </script>
+</body>
+</html>
